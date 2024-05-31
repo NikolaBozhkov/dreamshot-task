@@ -1,0 +1,20 @@
+{
+  "name": "dreamshot-task",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prebuild": "cp -r assets dist/assets",
+    "build": "esbuild src/index.ts --outdir=dist --bundle --watch --servedir=dist",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Nikola Bozhkov",
+  "license": "ISC",
+  "devDependencies": {
+    "esbuild": "0.21.4",
+    "node": "^20.14.0"
+  },
+  "dependencies": {
+    "pixi.js": "^8.1.5"
+  }
+}
