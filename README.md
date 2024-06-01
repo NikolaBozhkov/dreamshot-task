@@ -14,3 +14,5 @@ I opted out of using GSAP for animations, because as good as it is for tweening,
 ## Controls
 - Click on either side of the screeen to rotate the handle.
 - Rotations are non-blocking, meaning they can stack and the combination will be checked when all pending rotations are over.
+
+It took about 10 hours in total to complete.
