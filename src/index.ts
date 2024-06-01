@@ -1,4 +1,3 @@
-import '@pixi/math-extras';
 import { Application } from 'pixi.js';
 
 import { loadTextures, textureMap } from './texture';

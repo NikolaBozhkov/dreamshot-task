@@ -6,7 +6,7 @@ export function generateVaultCombination(length: number): VaultCombination {
     let lastDirection: VaultCombinationPair['direction'] = Math.random() < 0.5 ? 'clockwise' : 'counter-clockwise';
     for (let i = 0; i < length; i++) {
         combination.push({
-            count: 1 + Math.floor(Math.random() * 4),
+            count: 1 + Math.floor(Math.random() * 9),
             direction: lastDirection == 'clockwise' ? 'counter-clockwise' : 'clockwise',
         });
 
