@@ -1,4 +1,4 @@
-import { Application, FederatedPointerEvent, LinearDodgeBlend, Sprite, Ticker } from 'pixi.js';
+import { Application, FederatedPointerEvent, LinearDodgeBlend, Sprite, Text, Ticker } from 'pixi.js';
 
 import { VaultCombination, generateVaultCombination } from './vault-combination';
 import { textureMap } from './texture';
@@ -24,8 +24,21 @@ export class MainScene {
 
     private prevDirection = 0;
     private didCheckLastCombination = true;
+    private didWin = false;
 
     private sceneTime: number = 0;
+
+    private timerText: Text;
+    private _playerTime = 0;
+
+    private get playerTime() {
+        return this._playerTime;
+    }
+
+    private set playerTime(time: number) {
+        this._playerTime = time;
+        this.timerText.text = (this.playerTime * 0.001).toFixed(1);
+    }
 
     constructor(private readonly app: Application) {
         console.log(this.vaultCombination);
@@ -106,6 +119,20 @@ export class MainScene {
             x: app.renderer.width / 2 + 45,
             y: app.renderer.height / 2 + 95,
         };
+
+        this.timerText = new Text({
+            text: '0.0',
+            style: {
+                fontFamily: 'monospace',
+                fontSize: 18,
+                fill: '0xfcfdfa',
+                align: 'right',
+            },
+            position: {
+                x: app.renderer.width / 2 - 341,
+                y: app.renderer.height / 2 - 52,
+            },
+        });
     }
 
     init() {
@@ -115,6 +142,7 @@ export class MainScene {
         this.app.stage.addChild(this.background);
         this.app.stage.addChild(this.door);
         this.app.stage.addChild(this.handle);
+        this.app.stage.addChild(this.timerText);
 
         this.app.ticker.add(this.updateSceneTime.bind(this));
 
@@ -160,6 +188,7 @@ export class MainScene {
     private resetGame() {
         this.vaultCombination = generateVaultCombination(VAULT_COMBINATION_LENGTH);
         this.playerVaultCombination = [];
+        this.playerTime = 0;
         console.log(this.vaultCombination);
 
         this.handle.reset();
@@ -216,6 +245,7 @@ export class MainScene {
             const doesMatchLastPair = this.playerVaultCombination[this.playerVaultCombination.length - 1].count
                 == this.vaultCombination[this.vaultCombination.length - 1].count;
             if (this.playerVaultCombination.length == this.vaultCombination.length && doesMatchLastPair) {
+                this.didWin = true;
                 this.openVault();
             }
 
@@ -224,7 +254,11 @@ export class MainScene {
     }
 
     private updateSceneTime(ticker: Ticker) {
-        this.sceneTime += ticker.deltaTime;
+        this.sceneTime += ticker.deltaMS;
+
+        if (this.playerVaultCombination.length > 0 && !this.didWin) {
+            this.playerTime += ticker.deltaMS;
+        }
     }
 
     private updateShineParticles(ticker: Ticker) {
@@ -232,7 +266,7 @@ export class MainScene {
             let deltaTimeSeconds = ticker.deltaMS * 0.001;
             shineParticle.rotation += deltaTimeSeconds * Math.PI * 0.25;
             let particleTimeOffset = shineParticle.position.x + shineParticle.position.y;
-            shineParticle.alpha = 0.6 + 0.4 * (0.5 + 0.5 * Math.sin(this.sceneTime * 0.001 * Math.PI * 13 + particleTimeOffset));
+            shineParticle.alpha = 0.6 + 0.4 * (0.5 + 0.5 * Math.sin(this.sceneTime * 0.001 * Math.PI * 1.3 + particleTimeOffset));
         }
     }
 }
