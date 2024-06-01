@@ -92,6 +92,7 @@ export class Handle extends Container {
     updateResetRotation(ticker: Ticker) {
         if (!this.isResetting) return;
 
+        // Rotate by expImpulse and stop when the speed is minimum and the next turn rotation is reached
         this.timeSinceReset += ticker.deltaMS * 0.001;
         let f = expImpulse(this.timeSinceReset, 3);
         let rotSpeed = f * Math.PI * 10;

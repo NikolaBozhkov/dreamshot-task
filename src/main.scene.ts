@@ -7,6 +7,10 @@ import { Handle } from './handle';
 
 const VAULT_COMBINATION_LENGTH = 3;
 
+function printVaultCombination(combination: VaultCombination) {
+    console.log(combination.map(p => `${p.count} ${p.direction}`).join(', '));
+}
+
 export class MainScene {
 
     vaultCombination = generateVaultCombination(VAULT_COMBINATION_LENGTH);
@@ -41,13 +45,11 @@ export class MainScene {
     }
 
     constructor(private readonly app: Application) {
-        console.log(this.vaultCombination);
+        printVaultCombination(this.vaultCombination);
 
         const backgroundTexture = textureMap['bg'];
         this.aspectRatio = backgroundTexture.width / backgroundTexture.height;
         this.baseScale = app.renderer.width / backgroundTexture.width;
-
-        console.log(this.baseScale);
 
         this.background = new Sprite({
             texture: textureMap['bg'],
@@ -89,6 +91,8 @@ export class MainScene {
                 align: 'right',
             },
         });
+
+        this.timerText.anchor = { x: 1, y: 0 };
 
         this.resize();
     }
@@ -159,8 +163,8 @@ export class MainScene {
 
         this.timerText.style.fontSize = 64 * this.baseScale;
         this.timerText.position = {
-            x: this.app.renderer.width / 2 - 1218 * this.baseScale,
-            y: this.app.renderer.height / 2 - 185.7 * this.baseScale,
+            x: this.app.renderer.width / 2 - 1100 * this.baseScale,
+            y: this.app.renderer.height / 2 - 185 * this.baseScale,
         };
     }
 
@@ -218,7 +222,9 @@ export class MainScene {
         this.vaultCombination = generateVaultCombination(VAULT_COMBINATION_LENGTH);
         this.playerVaultCombination = [];
         this.playerTime = 0;
-        console.log(this.vaultCombination);
+        this.didWin = false;
+
+        printVaultCombination(this.vaultCombination);
 
         this.handle.reset();
 

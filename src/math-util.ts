@@ -1,7 +1,3 @@
-export function mix(a: number, b: number, x: number): number {
-    return a * (1 - x) + b * x;
-}
-
 export function expImpulse(x: number, k: number): number {
     let h = k * x;
     return h * Math.exp(1 - h);
