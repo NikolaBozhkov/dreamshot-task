@@ -1,4 +1,5 @@
 import { Application, Container, FederatedPointerEvent, Sprite, Ticker } from 'pixi.js';
+
 import { VaultCombination, generateVaultCombination } from './vault-combination';
 import { textureMap } from './texture';
 import { expImpulse, safeSign } from './math-util';

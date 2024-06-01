@@ -1,15 +1,10 @@
 import '@pixi/math-extras';
-import { Application, Sprite, Container, FederatedPointerEvent } from 'pixi.js';
+import { Application } from 'pixi.js';
 
 import { loadTextures, textureMap } from './texture';
-import { expImpulse, safeSign } from './math-util';
-
-import './index.css';
-import { VaultCombination, generateVaultCombination } from './vault-combination';
 import { MainScene } from './main.scene';
 
-const HANDLE_TURN_RADIANS = Math.PI / 3;
-const VAULT_COMBINATION_LENGTH = 3;
+import './index.css';
 
 let mainScene: MainScene;
 
