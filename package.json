@@ -15,6 +15,7 @@
     "node": "^20.14.0"
   },
   "dependencies": {
+    "@pixi/math-extras": "^7.4.2",
     "pixi.js": "^8.1.5"
   }
 }
