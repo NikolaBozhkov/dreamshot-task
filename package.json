@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prebuild": "cp -r assets dist/assets",
-    "build": "esbuild src/index.ts --outdir=dist --bundle --watch --servedir=dist",
+    "prebuild": "rm -rf dist && mkdir -p dist && cp -r assets dist/assets && cp index.html dist/index.html",
+    "predev": "npm run prebuild",
+    "prerun": "npm run prebuild",
+    "dev": "esbuild src/index.ts --outdir=dist --define:window.ENV=\\\"dev\\\" --bundle --watch --servedir=dist",
+    "run": "esbuild src/index.ts --outdir=dist --define:window.ENV=\\\"prod\\\" --bundle --servedir=dist",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Nikola Bozhkov",

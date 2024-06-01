@@ -9,8 +9,10 @@ import './index.css';
 let mainScene: MainScene;
 
 async function main() {
-    // Enable live reloading
-    new EventSource('/esbuild').addEventListener('change', () => location.reload());
+    if ((window as Window & typeof globalThis & { ENV: string }).ENV === 'dev') {
+        // Enable live reloading
+        new EventSource('/esbuild').addEventListener('change', () => location.reload());
+    }
 
     const app = new Application();
 
