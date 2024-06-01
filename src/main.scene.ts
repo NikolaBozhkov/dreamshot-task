@@ -20,7 +20,7 @@ export class MainScene {
     private handle: Handle;
     private doorOpen: Sprite;
     private doorOpenShadow: Sprite;
-    private shineParticle: Sprite[];
+    private shineParticles: Sprite[];
 
     private prevDirection = 0;
     private didCheckLastCombination = true;
@@ -47,92 +47,121 @@ export class MainScene {
         this.aspectRatio = backgroundTexture.width / backgroundTexture.height;
         this.baseScale = app.renderer.width / backgroundTexture.width;
 
+        console.log(this.baseScale);
+
         this.background = new Sprite({
             texture: textureMap['bg'],
-            width: this.app.renderer.width,
-            height: this.app.renderer.width / this.aspectRatio,
             anchor: { x: 0.5, y: 0.5 },
-            position: {
-                x: this.app.renderer.width / 2,
-                y: this.app.renderer.height / 2
-            },
         });
 
         this.door = new Sprite({
             texture: textureMap['door'],
             anchor: { x: 0.5, y: 0.5 },
-            scale: this.baseScale,
-            position: {
-                x: this.app.renderer.width / 2 + 15,
-                y: this.app.renderer.height / 2 - 12,
-            },
         });
 
         this.doorOpen = new Sprite({
             texture: textureMap['doorOpen'],
             anchor: { x: 0.5, y: 0.5 },
-            scale: this.baseScale,
-            position: {
-                x: this.app.renderer.width / 2 + textureMap['doorOpen'].width * this.baseScale + 60,
-                y: this.app.renderer.height / 2 - 7,
-            },
             zIndex: 1,
         });
 
         this.doorOpenShadow = new Sprite({
             texture: textureMap['doorOpenShadow'],
             anchor: { x: 0.5, y: 0.5 },
-            scale: this.baseScale,
-            position: {
-                x: this.doorOpen.position.x + 20,
-                y: this.doorOpen.position.y + 17,
-            },
         });
 
         this.handle = new Handle(this.baseScale);
-        this.handle.position = {
-            x: this.app.renderer.width / 2,
-            y: this.app.renderer.height / 2,
-        }
 
-        this.shineParticle = [];
+        this.shineParticles = [];
         for (let i = 0; i < 3; i++) {
-            this.shineParticle.push(new Sprite({
+            this.shineParticles.push(new Sprite({
                 texture: textureMap['blink'],
                 anchor: { x: 0.5, y: 0.5 },
-                scale: this.baseScale,
                 rotation: Math.random() * Math.PI * 2,
             }));
         }
-
-        this.shineParticle[0].position = {
-            x: app.renderer.width / 2 - 150,
-            y: app.renderer.height / 2,
-        };
-
-        this.shineParticle[1].position = {
-            x: app.renderer.width / 2 - 25,
-            y: app.renderer.height / 2 - 10,
-        };
-
-        this.shineParticle[2].position = {
-            x: app.renderer.width / 2 + 45,
-            y: app.renderer.height / 2 + 95,
-        };
 
         this.timerText = new Text({
             text: '0.0',
             style: {
                 fontFamily: 'monospace',
-                fontSize: 18,
                 fill: '0xfcfdfa',
                 align: 'right',
             },
-            position: {
-                x: app.renderer.width / 2 - 341,
-                y: app.renderer.height / 2 - 52,
-            },
         });
+
+        this.resize();
+    }
+
+    resize() {
+        const backgroundTexture = textureMap['bg'];
+        this.aspectRatio = backgroundTexture.width / backgroundTexture.height;
+        this.baseScale = this.app.renderer.width / backgroundTexture.width;
+
+        const rendererAspectRatio = this.app.renderer.width / this.app.renderer.height;
+        this.background.width = this.app.renderer.width;
+        this.background.height = this.app.renderer.width / this.aspectRatio;
+
+        // If width needs to be padded
+        if (rendererAspectRatio > this.aspectRatio) {
+            this.background.height = this.app.renderer.height;
+            this.background.width = this.app.renderer.height * this.aspectRatio;
+            this.baseScale = this.background.width / backgroundTexture.width;
+        }
+
+        this.background.position = {
+            x: this.app.renderer.width / 2,
+            y: this.app.renderer.height / 2,
+        };
+
+        this.door.scale = this.baseScale,
+        this.door.position = {
+            x: this.app.renderer.width / 2 + 54 * this.baseScale,
+            y: this.app.renderer.height / 2 - 43 * this.baseScale,
+        };
+
+        this.doorOpen.scale = this.baseScale;
+        this.doorOpen.position = {
+            x: this.app.renderer.width / 2 + (textureMap['doorOpen'].width + 214) * this.baseScale,
+            y: this.app.renderer.height / 2 - 25 * this.baseScale,
+        };
+
+        this.doorOpenShadow.scale = this.baseScale;
+        this.doorOpenShadow.position = {
+            x: this.doorOpen.position.x + 71.4 * this.baseScale,
+            y: this.doorOpen.position.y + 60.7 * this.baseScale,
+        };
+
+        this.handle.resize(this.baseScale);
+        this.handle.position = {
+            x: this.app.renderer.width / 2,
+            y: this.app.renderer.height / 2,
+        }
+
+        for (let shineParticle of this.shineParticles) {
+            shineParticle.scale = this.baseScale;
+        }
+
+        this.shineParticles[0].position = {
+            x: this.app.renderer.width / 2 - 536 * this.baseScale,
+            y: this.app.renderer.height / 2,
+        };
+
+        this.shineParticles[1].position = {
+            x: this.app.renderer.width / 2 - 89 * this.baseScale,
+            y: this.app.renderer.height / 2 - 35.7 * this.baseScale,
+        };
+
+        this.shineParticles[2].position = {
+            x: this.app.renderer.width / 2 + 160.7 * this.baseScale,
+            y: this.app.renderer.height / 2 + 339 * this.baseScale,
+        };
+
+        this.timerText.style.fontSize = 64 * this.baseScale;
+        this.timerText.position = {
+            x: this.app.renderer.width / 2 - 1218 * this.baseScale,
+            y: this.app.renderer.height / 2 - 185.7 * this.baseScale,
+        };
     }
 
     init() {
@@ -197,7 +226,7 @@ export class MainScene {
 
         this.app.stage.removeChild(this.doorOpen);
         this.app.stage.removeChild(this.doorOpenShadow);
-        this.app.stage.removeChild(...this.shineParticle);
+        this.app.stage.removeChild(...this.shineParticles);
 
         this.app.ticker.remove(this.updateShineParticles.bind(this));
 
@@ -212,7 +241,7 @@ export class MainScene {
 
         this.app.stage.addChild(this.doorOpen);
         this.app.stage.addChild(this.doorOpenShadow);
-        this.app.stage.addChild(...this.shineParticle);
+        this.app.stage.addChild(...this.shineParticles);
 
         this.app.ticker.add(this.updateShineParticles.bind(this));
 
@@ -262,7 +291,7 @@ export class MainScene {
     }
 
     private updateShineParticles(ticker: Ticker) {
-        for (let shineParticle of this.shineParticle) {
+        for (let shineParticle of this.shineParticles) {
             let deltaTimeSeconds = ticker.deltaMS * 0.001;
             shineParticle.rotation += deltaTimeSeconds * Math.PI * 0.25;
             let particleTimeOffset = shineParticle.position.x + shineParticle.position.y;

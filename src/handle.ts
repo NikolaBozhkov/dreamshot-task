@@ -28,25 +28,18 @@ export class Handle extends Container {
         this.handle = new Sprite({
             texture: textureMap['handle'],
             anchor: { x: 0.5, y: 0.5 },
-            width: textureMap['handle'].width * baseScale,
-            height: textureMap['handle'].height * baseScale,
-            position: { x: -11, y: -15 },
             zIndex: 1,
         });
 
         this.handleShadow = new Sprite({
             texture: textureMap['handleShadow'],
             anchor: { x: 0.5, y: 0.5 },
-            width: textureMap['handleShadow'].width * baseScale,
-            height: textureMap['handleShadow'].height * baseScale,
-            position: {
-                x: this.handle.position.x + 3,
-                y: this.handle.position.y + 10,
-            },
         });
 
         this.addChild(this.handle);
         this.addChild(this.handleShadow);
+
+        this.resize(baseScale);
     }
 
     addRotation(direction: number) {
@@ -121,5 +114,21 @@ export class Handle extends Container {
                 this.targetRotation = nextSnapRotation;
             }
         }
+    }
+
+    resize(baseScale: number) {
+        this.handle.width = textureMap['handle'].width * baseScale;
+        this.handle.height = textureMap['handle'].height * baseScale;
+        this.handle.position = {
+            x: -39 * baseScale,
+            y: -53.6 * baseScale,
+        };
+
+        this.handleShadow.width = textureMap['handleShadow'].width * baseScale;
+        this.handleShadow.height = textureMap['handleShadow'].height * baseScale;
+        this.handleShadow.position = {
+            x: this.handle.position.x + 10.7 * baseScale,
+            y: this.handle.position.y + 35.7 * baseScale,
+        };
     }
 }

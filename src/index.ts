@@ -27,6 +27,10 @@ async function main() {
 
     mainScene = new MainScene(app);
     mainScene.init();
+
+    window.addEventListener('resize', () => {
+        mainScene.resize();
+    });
 }
 
 main();
